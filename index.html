@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- Meta Tags
+        ========================== -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        
+        <!-- Site Title
+        ========================== -->
+        <title>Shopping Cart Task</title>
+                
+        <!-- Favicon
+		===========================-->
+		<link rel="shortcut icon" type="image/x-icon" href="images/fav.png">
+        
+        
+        <!-- Web Fonts
+        ========================== -->
+        
+        <!-- Base & Vendors
+        ========================== -->
+        <link href="vendor/bootstrap/css/bootstrap.css" rel="stylesheet">
+        <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <!-- Site Style
+        ========================== -->
+        <link rel="stylesheet" href="css/style.css">
+        
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+            <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="page-content">
+                <section class="home section-lg" id="sheikh">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="row">
+                                    <div v-for="(item, index) in items" v-bind:key="item.id" class="col-lg-4">
+                                        <div class="item">
+                                            <div class="item-img">
+                                                <img alt="item" :src="item.img">
+                                            </div>
+                                            <div class="item-info text-center">
+                                                <h4>{{ item.name }}</h4>
+                                                <h5 class="price">{{ item.price }} $</h5>
+                                                <button @click="addItem(item)">Add To Cart</button>
+<!--                                                <button v-else class="bg-success" style="color: #fff">Added</button>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>    
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="shopping-cart">
+                                    <div class="noti">{{ cards.length }}</div>
+                                    <button class="btn-colapse" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                        Shopping Cart
+                                    </button>
+                                    <div class="collapse" id="collapseExample">
+                                      <div class="card card-body">
+                                          <ul>
+                                            <li v-for="card in cards">
+                                                <div class="row no-gutters">
+                                                    <div class="col-lg-4">
+                                                        <img alt="item"  :src="card.img">
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <div class="details">
+                                                            <h5>{{ card.name }}</h5>
+                                                            <p>{{ card.price * card.qty }} $</p>
+                                                            <div class="counter">
+                                                                <i class="fa fa-plus" @click="increment(card)" id="plus"></i>
+                                                                <input type="text" id="result" :value="card.qty">
+                                                                <i class="fa fa-minus" @click="decrement(card)" id="minus"></i>
+                                                            </div>
+                                                            <i @click="deleteItem(card)" class="fa fa-trash" id="delete"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>  
+                                            </li>
+                                          </ul>
+                                      </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <footer></footer> <!-- End Footer -->
+            </div> <!-- End page-content -->
+        </div><!-- End Wrapper -->
+        
+        <script src="vendor/jquery/jquery.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.js"></script>
+        <script src="js/vue.js"></script>
+        <script src="js/main.js"></script>
+        <script>
+            new Vue({
+                'el': '#sheikh',
+                'data':{
+                    items: [
+                        {
+                          id: 1,
+                          img : 'images/1.png',
+                          name : 'HeadPhone',
+                          price : 150
+                        },
+                        {
+                            id: 2,
+                          img : 'images/2.png',
+                          name : 'MicroPhone',
+                          price : 170
+                        },
+                        {
+                            id: 3,
+                          img : 'images/3.png',
+                          name : 'Laptop',
+                          price : 300
+                        },
+                        {
+                            id: 4,
+                          img : 'images/4.png',
+                          name : 'Mobile Phone',
+                          price : 250
+                        }
+                   ],
+                    cards: [
+                    ]
+                },
+                'methods': {
+                    deleteItem: function (card){
+                        var index = this.cards.indexOf(card);
+                        this.cards.splice(index, 1);
+                    },
+                    addItem: function (obj){
+                        
+                        let thisObj  =   this.cards.find(x => x.id === obj.id)
+                    if( thisObj ){
+                       thisObj.qty++
+                    }else{
+                        this.cards.push({
+                            id: obj.id,
+                            img: obj.img,
+                            name: obj.name,
+                            price: obj.price,
+                            qty: 1
+                        });
+                    }
+            
+                        
+                    },
+                   increment: function(card){
+                    card.qty++
+                   },
+                   decrement: function(card) {
+                       if( card.qty == 1){
+                           card.qty = 1;
+                       }else {
+                         card.qty--
+                       }
+                   }
+                }
+                
+            })
+        </script>
+        
+        
+    </body>
+</html>
